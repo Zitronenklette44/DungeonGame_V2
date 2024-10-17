@@ -17,7 +17,6 @@ public class GameLogic {
 	public void startProcesses() {
 
 		movePlayer();
-		System.out.println("change");
 	}
 
 	private void movePlayer() {
