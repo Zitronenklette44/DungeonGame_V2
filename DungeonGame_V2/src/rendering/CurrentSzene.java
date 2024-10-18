@@ -43,12 +43,14 @@ public class CurrentSzene extends JLabel{
 		
 		Main.gvStorage.screenController.drawObjects(g);
 		
-		g.setColor(Color.white);
+		
+		
+		
+		//debug Camera 
+		/*g.setColor(Color.white);
 		g.drawOval(Screen.size.width/2 - Main.gvStorage.innerCameraBox/2, Screen.size.height/2-Main.gvStorage.innerCameraBox/2, Main.gvStorage.innerCameraBox, Main.gvStorage.innerCameraBox);
-		
-		g.drawOval(Screen.size.width/2 - Main.gvStorage.outerCameraBox/2, Screen.size.height/2-Main.gvStorage.outerCameraBox/2, Main.gvStorage.outerCameraBox, Main.gvStorage.outerCameraBox);
-//		Logger.logInfo((Screen.size.width/2 - Main.gvStorage.outerCameraBox/2)+", " +(Screen.size.height/2-Main.gvStorage.outerCameraBox/2)+", " + Main.gvStorage.outerCameraBox+", " + Main.gvStorage.outerCameraBox);
-		
+		g.drawOval(Screen.size.width/2 - Main.gvStorage.outerCameraBox/2, Screen.size.height/2-Main.gvStorage.outerCameraBox/2, Main.gvStorage.outerCameraBox, Main.gvStorage.outerCameraBox);*/
+//		Logger.logInfo((Screen.size.width/2 - Main.gvStorage.innerCameraBox/2)+", " +(Screen.size.height/2-Main.gvStorage.innerCameraBox/2)+", " + Main.gvStorage.innerCameraBox+", " + Main.gvStorage.innerCameraBox);
 	}
 	
 	

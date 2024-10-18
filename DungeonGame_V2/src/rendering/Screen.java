@@ -31,12 +31,14 @@ public class Screen extends JFrame {
 				pos = new Point(0, 0);
 				GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 				size = new Dimension(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
-
+				Main.gvStorage.updateScreenDetails();
+				
 				try { // creating frame
 					frame = new Screen();
 					frame.addKeyListener(new KeyHandler());
 					frame.setLocation(pos);
 					frame.setVisible(true);
+					Main.gvStorage.player.pos = Main.gvStorage.centerPos;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

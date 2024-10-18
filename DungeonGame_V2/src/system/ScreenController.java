@@ -3,6 +3,7 @@ package system;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import fundamentals.SimpleObject;
 import rendering.Screen;
@@ -10,11 +11,11 @@ import rendering.Screen;
 public class ScreenController {
 
 	private ArrayList<SimpleObject> currentObjects;
-	private ArrayList<SimpleObject> allObjects;
+	private CopyOnWriteArrayList<SimpleObject> allObjects;
 
 	public ScreenController() {
 		currentObjects = new ArrayList<>();
-		allObjects = new ArrayList<>();
+		allObjects = new CopyOnWriteArrayList<>();
 
 	}
 
@@ -27,7 +28,7 @@ public class ScreenController {
 			SimpleObject Object = iterator.next();
 
 			if (Object.pos.getVecX() + Object.size.width < 0 || Object.pos.getVecX() > Width - Object.size.width - 5
-					|| Object.pos.getVecY() < 0 || Object.pos.getVecY() > Height) {
+					|| Object.pos.getVecY() + Object.size.height < 0 || Object.pos.getVecY() > Height) {
 				iterator.remove();
 			}
 		}
@@ -36,8 +37,8 @@ public class ScreenController {
 		while (iterator.hasNext()) {
 			SimpleObject Object = iterator.next();
 
-			if (Object.pos.getVecX() + Object.size.width > 0 && Object.pos.getVecX() < Width && Object.pos.getVecY() > 0
-					&& Object.pos.getVecY() < Height) {
+			if (Object.pos.getVecX() + Object.size.width > 0 && Object.pos.getVecX() < Width &&
+					Object.pos.getVecY() + Object.size.height > 0 && Object.pos.getVecY() < Height) {
 				if (!currentObjects.contains(Object)) {
 					currentObjects.add(Object);
 				}
@@ -70,7 +71,7 @@ public class ScreenController {
 
 	}
 
-	public ArrayList<SimpleObject> getAllObjects() {
+	public CopyOnWriteArrayList<SimpleObject> getAllObjects() {
 		return allObjects;
 	}
 

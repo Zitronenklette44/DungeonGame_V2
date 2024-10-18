@@ -7,8 +7,8 @@ import main.Main;
 
 public class CreateMob {
 	
-	public static void createTestObject() {
-		Main.gvStorage.screenController.addObject(new TestObject(new Dimension(50,100), 200, 300));
+	public static void createTestObject(Dimension size, float posX, float posY) {
+		Main.gvStorage.screenController.addObject(new TestObject(size, posX, posY));
 
 	}
 	
