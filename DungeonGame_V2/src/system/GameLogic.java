@@ -1,6 +1,9 @@
 package system;
 
+import java.util.Iterator;
+
 import fundamentals.CameraMovement;
+import fundamentals.SimpleObject;
 import main.Main;
 import rendering.Screen;
 
@@ -19,7 +22,9 @@ public class GameLogic {
 
 		movePlayer();
 		CameraMovement.movementLogic();
+		CollisionObjects();
 	}
+
 
 	private void movePlayer() {		//Controls for the player movement
 		//Variables from key press
@@ -29,7 +34,7 @@ public class GameLogic {
 		boolean moveDown = Main.gvStorage.moveDown;
 
 		//		Logger.logInfo("L: "+moveLeft+" R: "+ moveRight+" U: "+ moveUp+" D: "+moveDown);
-		
+
 		//while at least one is pressed
 		if (moveLeft || moveRight || moveUp || moveDown) {
 			Main.gvStorage.player.speed += Main.gvStorage.player.accelerationRate;		//adding acceleration to current speed
@@ -58,7 +63,7 @@ public class GameLogic {
 		}
 
 		if (!moveUp && !moveDown) {	//while not moving on Y-axis
-//			Logger.logInfo("No move up/Down + player vecY: "+ Main.gvStorage.player.movement.vecY);
+			//			Logger.logInfo("No move up/Down + player vecY: "+ Main.gvStorage.player.movement.vecY);
 			if (Main.gvStorage.player.movement.vecY >= 0.1) {	//when movement is over 0.1
 				Main.gvStorage.player.movement.vecY -= (Main.gvStorage.player.movement.vecY / 100) * 20;	//decrease movement vector for y-axis by 20% of current movement
 			} else if (Main.gvStorage.player.movement.vecY <= -0.1) {	//when movement is under -0.1
@@ -85,9 +90,11 @@ public class GameLogic {
 					}
 					if (lastXPos == Main.gvStorage.player.movement.vecX && lastXPos != 0) {		//if last stored movement equals current movement and isn't zero
 						XCounter++;		//increment counter
+					}else {
+						XCounter = 0;
 					}
 					lastXPos = Main.gvStorage.player.movement.vecX;		//store movement into variable
-//					Logger.logInfo("addLeft: " + Main.gvStorage.player.movement.vecX);
+					//					Logger.logInfo("addLeft: " + Main.gvStorage.player.movement.vecX);
 				}
 			}
 			if (moveRight) {	//when move right
@@ -98,12 +105,14 @@ public class GameLogic {
 						Main.gvStorage.player.movement.vecX = 0;	//reset movement do to error
 						XCounter = 0;	//reset counter
 					}
-//					Logger.logInfo("LastXPos: "+ lastXPos);
+					//					Logger.logInfo("LastXPos: "+ lastXPos);
 					if (lastXPos == Main.gvStorage.player.movement.vecX && lastXPos != 0) {	//when last stored movement equals current movement and isn't zero
 						XCounter++;		//increment counter
+					}else {
+						XCounter = 0;
 					}
 					lastXPos = Main.gvStorage.player.movement.vecX;		//store current movement
-//						    	        Logger.logInfo("addRight: " + Main.gvStorage.player.movement.vecX);
+					//						    	        Logger.logInfo("addRight: " + Main.gvStorage.player.movement.vecX);
 				}
 			}
 		}
@@ -114,7 +123,7 @@ public class GameLogic {
 			if (moveUp) {	//when move up
 				if (Main.gvStorage.player.movement.vecY > -Main.gvStorage.player.maxSpeed) {	// when movement is bigger then negative max speed value
 					Main.gvStorage.player.movement.add(Vector3.upVec());	//increase movement by negative one
-//					Logger.logInfo("addUp: "+ Main.gvStorage.player.movement.vecY);
+					//					Logger.logInfo("addUp: "+ Main.gvStorage.player.movement.vecY);
 					if (YCounter >= 3) {	//if counter reaches 3
 						Logger.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecY);
 						Main.gvStorage.player.movement.vecY = 0;	//reset movement
@@ -122,6 +131,8 @@ public class GameLogic {
 					}
 					if (lastYPos == Main.gvStorage.player.movement.vecY && lastYPos != 0) {	//when last movement equals current movement and isn't zero
 						YCounter++;		//increment counter
+					}else {
+						YCounter = 0;
 					}
 					lastYPos = Main.gvStorage.player.movement.vecY;	//store current movement
 				}
@@ -136,6 +147,8 @@ public class GameLogic {
 					}
 					if (lastYPos == Main.gvStorage.player.movement.vecY && lastYPos != 0) {	//when current movement equals last movement and isn't zero
 						YCounter++;		//increment counter
+					}else {
+						YCounter = 0;
 					}
 					lastYPos = Main.gvStorage.player.movement.vecY;		//store current movement
 				}
@@ -162,6 +175,60 @@ public class GameLogic {
 		}
 		return false;
 	}
+
+	public boolean checkCollision(SimpleObject obj1, SimpleObject obj2) {
+
+		boolean collisionX = obj1.pos.getVecX() + obj1.size.width > obj2.pos.getVecX() &&
+                obj1.pos.getVecX() < obj2.pos.getVecX() + obj2.size.width;	//overlapping on x-axis
+
+		boolean collisionY = obj1.pos.getVecY() + obj1.size.height > obj2.pos.getVecY() &&
+                obj1.pos.getVecY() < obj2.pos.getVecY() + obj2.size.height;	//overlapping on y-axis
+		
+		
+		if (collisionX && collisionY) {
+	        obj1.onCollision(obj2);
+	        obj2.onCollision(obj1);
+	        
+	        return true;
+	    }
+		
+		/*if (collisionX && collisionY) {
+	        if (!obj1.isColliding && !obj2.isColliding) {
+	            //start collision
+	        	obj1.startCollision(obj2);
+	        	obj2.startCollision(obj1);
+	        	obj1.isColliding = true;  //save collision start
+	            obj2.isColliding = true;
+	            return true;
+	        }
+	    } else {
+	        if (obj1.isColliding || obj2.isColliding) {
+	            //end collision
+	        	obj1.stopCollision(obj2);
+	        	obj2.stopCollision(obj1);
+	            obj1.isColliding = false; 	//save collision stop
+	            obj2.isColliding = false;
+	        }
+	    }*/
+		// no collision
+		return false;
+	}
+
+	private void CollisionObjects() {	//checks collisions for all Elements on Screen with all other Elements on screen
+	    Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getCurrentObjects().iterator();
+	    while (iterator.hasNext()) {	//for all current Elements
+	        SimpleObject ob = iterator.next();
+
+	        Iterator<SimpleObject> iteratorInner = Main.gvStorage.screenController.getCurrentObjects().iterator();
+	        while (iteratorInner.hasNext()) {	//for all current Elements
+	            SimpleObject obInner = iteratorInner.next();	
+	            if (ob != obInner) {	//stop self collision
+	                checkCollision(ob, obInner);	//check collision
+	            }
+	        }
+	    }
+	}
+
 
 
 }

@@ -2,7 +2,10 @@ package entitys;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+
 import fundamentals.SimpleObject;
+import system.Logger;
 import system.Vector3;
 
 public class MobTemplate extends SimpleObject{
@@ -31,7 +34,19 @@ public class MobTemplate extends SimpleObject{
 	}
 		
 	
+	@Override
+	public void onCollision(SimpleObject ob) {
+		if(hasCollision) {
+			pos.add(movement.getReverse());
+			speed = 0;
+			movement = Vector3.zeroVec();
+		}
+	}
 	
-	
+	@Override
+	public void draw(Graphics2D g) {
+		g.setColor(color);
+		g.fillRect((int)pos.getVecX(), (int)pos.getVecY(), size.width, size.height);
+	}
 	
 }

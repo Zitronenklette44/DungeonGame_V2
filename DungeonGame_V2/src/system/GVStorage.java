@@ -16,6 +16,7 @@ public class GVStorage {
 	public ScreenController screenController;
 	public Tick tickTimer;
 	public Player player;
+	public boolean debug = false;
 	
 	//key Variables
 	public boolean moveLeft = false;
@@ -73,7 +74,12 @@ public class GVStorage {
 	        positions.add(newPos);
 
 	        // Erstelle das Objekt mit der validierten Position
-	        CreateMob.createTestObject(new Dimension((int)(Math.random()*100)+10, (int)(Math.random()*100)+10), (int)newPos.getVecX(), (int)newPos.getVecY());
+	        int randomNum = (int) (Math.random()*100);
+	        if(randomNum%2 == 0) {
+	        	CreateMob.testObject(new Dimension((int)(Math.random()*100)+10, (int)(Math.random()*100)+10), (int)newPos.getVecX(), (int)newPos.getVecY());
+	        } else {
+	        	CreateMob.colorSwitcher(new Dimension((int)(Math.random()*60)+50, (int)(Math.random()*60)+50), (int)newPos.getVecX(), (int)newPos.getVecY());
+	        }
 	    }
 	}
 

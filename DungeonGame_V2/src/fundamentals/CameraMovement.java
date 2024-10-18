@@ -22,16 +22,17 @@ public class CameraMovement {
 
         float cameraSpeed = calculateCameraSpeed(movementThreshold);  // Bewegungsschwelle nutzen
 
-        if (Main.gvStorage.player.speed > 0) {  // Wenn der Spieler sich bewegt
+        if (Main.gvStorage.player.speed > 0 && !Main.gvStorage.player.isColliding) {  // Wenn der Spieler sich bewegt
             if (cameraSpeed > 0) {
                 moveObjects(cameraSpeed);
             }
-        } else if (!isPlayerCentered(centerThreshold)) {  // Spieler steht, nutze Zentrierschwelle
+        } else if (!isPlayerCentered(centerThreshold) && !Main.gvStorage.player.isColliding) {  // Spieler steht, nutze Zentrierschwelle
             cameraSpeed = calculateCameraSpeed(centerThreshold);  // Nutze Zentrierschwelle
             if (cameraSpeed > 0) {
                 adjustCameraToCenter();
             }
         }
+        Logger.logInfo("isColliding: "+Main.gvStorage.player.isColliding);
     }
 	
 	
@@ -40,6 +41,9 @@ public class CameraMovement {
 	}
 	
 	private static float calculateCameraSpeed(float threshold) {
+		if(Main.gvStorage.player.isColliding) {
+			return 0;
+		}
         float maxSpeed = Main.gvStorage.player.maxSpeed;
         float outerBox = Main.gvStorage.outerCameraBox / 2;
         float innerBox = Main.gvStorage.innerCameraBox / 2;
@@ -51,12 +55,14 @@ public class CameraMovement {
             throw new IllegalArgumentException("Division durch Null oder negative Werte im Nenner: " + distanceFactor);
         }
 
-        // Verwende den übergebenen Schwellenwert (entweder movementThreshold oder centerThreshold)
         float adjustedDistance = Math.max(0, Math.min(distance - threshold, distanceFactor));
         return (maxSpeed / distanceFactor) * adjustedDistance;
     }
 	
-	private static void moveObjects(float Speed) {
+	private static void moveObjects(float Speed) {		
+		if(Main.gvStorage.player.isColliding) {
+			return;
+		}
 		Vector3 antiPlayer = Main.gvStorage.player.movement.getReverse();
 		
 		antiPlayer.normalize();
@@ -98,7 +104,7 @@ public class CameraMovement {
         directionToCenter.subtract(Main.gvStorage.player.pos);
         directionToCenter.normalize();
         
-        moveObjects(directionToCenter, Main.gvStorage.player.maxSpeed / 2);  // Kamera bewegt sich langsamer
+        moveObjects(directionToCenter, Main.gvStorage.player.maxSpeed / 5);  // Kamera bewegt sich langsamer
     }
 	
 }

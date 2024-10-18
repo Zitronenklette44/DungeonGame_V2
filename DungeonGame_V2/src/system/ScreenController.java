@@ -2,6 +2,7 @@ package system;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -63,10 +64,14 @@ public class ScreenController {
 	}
 
 	public void drawObjects(Graphics2D g) {
+		try {
 		Iterator<SimpleObject> iterator = currentObjects.iterator();
 		while (iterator.hasNext()) {
 			SimpleObject ob = iterator.next();
 			ob.draw(g);
+		}
+		}catch (ConcurrentModificationException e) {
+			// TODO: handle exception
 		}
 
 	}

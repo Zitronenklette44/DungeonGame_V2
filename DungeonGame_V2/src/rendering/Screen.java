@@ -63,6 +63,7 @@ public class Screen extends JFrame {
 	 * Create the frame.
 	 */
 	public Screen() {
+		setMinimumSize(new Dimension(800, 700));
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {

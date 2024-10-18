@@ -12,10 +12,7 @@ public class KeyHandler implements KeyListener{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -33,6 +30,11 @@ public class KeyHandler implements KeyListener{
 		
 		if(e.getKeyChar() == 'w' || e.getKeyChar() == 'W') {
 			Main.gvStorage.moveUp = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_F1) {
+			Main.gvStorage.debug = !Main.gvStorage.debug;
+			Logger.logInfo("debug change: "+ Main.gvStorage.debug);
 		}
 		
 	}
