@@ -104,6 +104,20 @@ public class Vector3 {
 		    );
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj.getClass() == this.getClass()) {
+			Vector3 vec = (Vector3) obj;
+			
+			return vecX == vec.getVecX() &&
+					vecY == vec.getVecY() &&
+					vecZ == vec.getVecZ();
+			
+		}else {
+			return false;
+		}
+	}
+	
 	
 	@Override
 	public String toString() {

@@ -3,8 +3,10 @@ package fundamentals;
 import java.util.Iterator;
 
 import main.Main;
+import system.GameLogic;
 import system.Logger;
 import system.Vector3;
+import timer.Tick;
 
 public class CameraMovement {
 	
@@ -24,15 +26,19 @@ public class CameraMovement {
 
         if (Main.gvStorage.player.speed > 0 && !Main.gvStorage.player.isColliding) {  // Wenn der Spieler sich bewegt
             if (cameraSpeed > 0) {
-                moveObjects(cameraSpeed);
+            	Vector3 directionToCenter = Main.gvStorage.centerPos.copy();
+                directionToCenter.subtract(Main.gvStorage.player.pos);
+                directionToCenter.normalize();
+                
+                moveObjects(directionToCenter, cameraSpeed);
             }
-        } else if (!isPlayerCentered(centerThreshold) && !Main.gvStorage.player.isColliding) {  // Spieler steht, nutze Zentrierschwelle
+        } else if (!isPlayerCentered(centerThreshold) /*&& !Main.gvStorage.player.isColliding*/) {  // Spieler steht, nutze Zentrierschwelle
             cameraSpeed = calculateCameraSpeed(centerThreshold);  // Nutze Zentrierschwelle
             if (cameraSpeed > 0) {
                 adjustCameraToCenter();
             }
         }
-        Logger.logInfo("isColliding: "+Main.gvStorage.player.isColliding);
+//        Logger.logInfo("isColliding: "+Main.gvStorage.player.isColliding);
     }
 	
 	
@@ -41,9 +47,6 @@ public class CameraMovement {
 	}
 	
 	private static float calculateCameraSpeed(float threshold) {
-		if(Main.gvStorage.player.isColliding) {
-			return 0;
-		}
         float maxSpeed = Main.gvStorage.player.maxSpeed;
         float outerBox = Main.gvStorage.outerCameraBox / 2;
         float innerBox = Main.gvStorage.innerCameraBox / 2;
@@ -52,42 +55,21 @@ public class CameraMovement {
         float distanceFactor = outerBox - innerBox;
 
         if (distanceFactor <= 0) {
-            throw new IllegalArgumentException("Division durch Null oder negative Werte im Nenner: " + distanceFactor);
+            Logger.logError("Fehlerhafte berechnung: "+ new IllegalAccessException(""));
         }
 
         float adjustedDistance = Math.max(0, Math.min(distance - threshold, distanceFactor));
         return (maxSpeed / distanceFactor) * adjustedDistance;
     }
 	
-	private static void moveObjects(float Speed) {		
-		if(Main.gvStorage.player.isColliding) {
-			return;
-		}
-		Vector3 antiPlayer = Main.gvStorage.player.movement.getReverse();
-		
-		antiPlayer.normalize();
-		antiPlayer.scale(Speed);
-		
-		if(Main.gvStorage.screenController.getAllObjects().size() == 0) {
-			return;
-		}
-		
-		Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getAllObjects().iterator();
-		while(iterator.hasNext()) {
-			SimpleObject ob = iterator.next();
-				ob.pos.add(antiPlayer);
-		}
-
-	}
-	
 	private static void moveObjects(Vector3 direction, float speed) {
-	    // Skaliere den Bewegungsvektor entsprechend der Geschwindigkeit
-	    direction.scale(speed);
+	    direction.scale(speed);		//adjust direction with speed
 
 	    Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getAllObjects().iterator();
+	    Tick.gameLogic.moveLastPos(direction);
 	    while (iterator.hasNext()) {
 	        SimpleObject ob = iterator.next();
-	        ob.pos.add(direction);  // Bewege jedes Objekt in die Richtung des Zentrums
+	        ob.pos.add(direction);  //move objects to center
 	    }
 	}
 	

@@ -9,10 +9,12 @@ import rendering.Screen;
 
 public class GameLogic {
 
-	private float lastXPos = 0;
-	private float lastYPos = 0;
+	private float lastXMovement = 0;
+	private float lastYMovement = 0;
 	private int XCounter = 0;
 	private int YCounter = 0;
+	
+	private Vector3 lastPos = Vector3.zeroVec();
 
 	public GameLogic() {
 
@@ -34,7 +36,20 @@ public class GameLogic {
 		boolean moveDown = Main.gvStorage.moveDown;
 
 		//		Logger.logInfo("L: "+moveLeft+" R: "+ moveRight+" U: "+ moveUp+" D: "+moveDown);
-
+		
+		if (moveLeft || moveRight || moveUp || moveDown) {
+			if(lastPos.equals(Main.gvStorage.player.pos)) {
+				Main.gvStorage.player.isColliding = true;
+			}else {
+				Main.gvStorage.player.isColliding = false;
+			}
+		}else {
+			Main.gvStorage.player.isColliding = false;
+		}
+		
+		lastPos = Main.gvStorage.player.pos.copy();
+		Logger.logInfo("colliding: "+ Main.gvStorage.player.isColliding);
+		
 		//while at least one is pressed
 		if (moveLeft || moveRight || moveUp || moveDown) {
 			Main.gvStorage.player.speed += Main.gvStorage.player.accelerationRate;		//adding acceleration to current speed
@@ -88,12 +103,12 @@ public class GameLogic {
 						Main.gvStorage.player.movement.vecX = 0;	//reset movement do to error
 						XCounter = 0;	//reset counter
 					}
-					if (lastXPos == Main.gvStorage.player.movement.vecX && lastXPos != 0) {		//if last stored movement equals current movement and isn't zero
+					if (lastXMovement == Main.gvStorage.player.movement.vecX && lastXMovement != 0 && Math.abs(lastXMovement) != 1) {		//if last stored movement equals current movement and isn't zero
 						XCounter++;		//increment counter
 					}else {
 						XCounter = 0;
 					}
-					lastXPos = Main.gvStorage.player.movement.vecX;		//store movement into variable
+					lastXMovement = Main.gvStorage.player.movement.vecX;		//store movement into variable
 					//					Logger.logInfo("addLeft: " + Main.gvStorage.player.movement.vecX);
 				}
 			}
@@ -106,12 +121,12 @@ public class GameLogic {
 						XCounter = 0;	//reset counter
 					}
 					//					Logger.logInfo("LastXPos: "+ lastXPos);
-					if (lastXPos == Main.gvStorage.player.movement.vecX && lastXPos != 0) {	//when last stored movement equals current movement and isn't zero
+					if (lastXMovement == Main.gvStorage.player.movement.vecX && lastXMovement != 0 && Math.abs(lastXMovement) != 1) {	//when last stored movement equals current movement and isn't zero
 						XCounter++;		//increment counter
 					}else {
 						XCounter = 0;
 					}
-					lastXPos = Main.gvStorage.player.movement.vecX;		//store current movement
+					lastXMovement = Main.gvStorage.player.movement.vecX;		//store current movement
 					//						    	        Logger.logInfo("addRight: " + Main.gvStorage.player.movement.vecX);
 				}
 			}
@@ -129,12 +144,12 @@ public class GameLogic {
 						Main.gvStorage.player.movement.vecY = 0;	//reset movement
 						YCounter = 0;	//reset counter
 					}
-					if (lastYPos == Main.gvStorage.player.movement.vecY && lastYPos != 0) {	//when last movement equals current movement and isn't zero
+					if (lastYMovement == Main.gvStorage.player.movement.vecY && lastYMovement != 0 && Math.abs(lastYMovement) != 1) {	//when last movement equals current movement and isn't zero
 						YCounter++;		//increment counter
 					}else {
 						YCounter = 0;
 					}
-					lastYPos = Main.gvStorage.player.movement.vecY;	//store current movement
+					lastYMovement = Main.gvStorage.player.movement.vecY;	//store current movement
 				}
 			}
 			if (moveDown) {		//when move down
@@ -145,12 +160,12 @@ public class GameLogic {
 						Main.gvStorage.player.movement.vecY = 0;	//reset movement
 						YCounter = 0;		//reset counter
 					}
-					if (lastYPos == Main.gvStorage.player.movement.vecY && lastYPos != 0) {	//when current movement equals last movement and isn't zero
+					if (lastYMovement == Main.gvStorage.player.movement.vecY && lastYMovement != 0 && Math.abs(lastYMovement) != 1) {	//when current movement equals last movement and isn't zero
 						YCounter++;		//increment counter
 					}else {
 						YCounter = 0;
 					}
-					lastYPos = Main.gvStorage.player.movement.vecY;		//store current movement
+					lastYMovement = Main.gvStorage.player.movement.vecY;		//store current movement
 				}
 			}
 		}
@@ -227,6 +242,10 @@ public class GameLogic {
 	            }
 	        }
 	    }
+	}
+
+	public void moveLastPos(Vector3 movement) {
+		this.lastPos.add(movement);
 	}
 
 
