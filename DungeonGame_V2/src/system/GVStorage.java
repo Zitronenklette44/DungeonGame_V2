@@ -6,14 +6,18 @@ import java.util.List;
 
 import entitys.CreateMob;
 import entitys.mobs.Player;
+import items.ItemManager;
+import items.ItemTemplate;
 import main.Main;
 import rendering.Screen;
+import system.interfaces.InterfaceLogic;
 import timer.Tick;
 
 public class GVStorage {
 	
 	//random System stuff
 	public ScreenController screenController;
+	public ItemManager itemManager;
 	public Tick tickTimer;
 	public Player player;
 	public boolean debug = false;
@@ -31,9 +35,12 @@ public class GVStorage {
 	public Vector3 centerPos = new Vector3(300, 300, 0);
 	
 	
+	//Listen
+	
 	
 	public GVStorage() {
 		screenController = new ScreenController();
+		itemManager = new ItemManager();
 		tickTimer = new Tick();
 		player = new Player();
 		
@@ -45,7 +52,7 @@ public class GVStorage {
 	public void createObjects() {
 	    Main.gvStorage.screenController.addObject(player);
 
-	    int numObjects = 5000;
+	    int numObjects = 500;
 	    int minDistance = 250;  // Mindestabstand zwischen den Objekten
 	    List<Vector3> positions = new ArrayList<>();  // Speichert die Positionen aller Objekte
 	    
@@ -91,7 +98,7 @@ public class GVStorage {
 	}
 	
 	public void updateScreenDetails() {
-		Logger.logWarning("updated Screen");
+		MyConsole.logWarning("updated Screen");
 		innerCameraBox = (Screen.size.height/100)*40;
 		outerCameraBox = (Screen.size.height/100)*80;
 		centerPos = new Vector3(Screen.size.width/2, Screen.size.height/2, 0);

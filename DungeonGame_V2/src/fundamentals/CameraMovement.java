@@ -3,8 +3,7 @@ package fundamentals;
 import java.util.Iterator;
 
 import main.Main;
-import system.GameLogic;
-import system.Logger;
+import system.MyConsole;
 import system.Vector3;
 import timer.Tick;
 
@@ -12,33 +11,32 @@ public class CameraMovement {
 	
 	float cameraSpeed;
 	
-	private static float movementThreshold = Main.gvStorage.innerCameraBox / 2;  // Schwelle für Bewegung
-    private static float centerThreshold = Main.gvStorage.innerCameraBox / 4;  // Kleinere Schwelle für Zentrieren
+	private static float movementThreshold = Main.gvStorage.innerCameraBox / 2; 
+    private static float centerThreshold = Main.gvStorage.innerCameraBox / 4;
 	
 	public CameraMovement() {
 	}
 	
 	public static void movementLogic() {
-        movementThreshold = Main.gvStorage.innerCameraBox / 2;
+        movementThreshold = Main.gvStorage.innerCameraBox / 2;		//refresh to exclude errors do to resizing the frame
         centerThreshold = Main.gvStorage.innerCameraBox / 4;
 
-        float cameraSpeed = calculateCameraSpeed(movementThreshold);  // Bewegungsschwelle nutzen
+        float cameraSpeed = calculateCameraSpeed(movementThreshold);  // use movement Threshold
 
-        if (Main.gvStorage.player.speed > 0 && !Main.gvStorage.player.isColliding) {  // Wenn der Spieler sich bewegt
+        if (Main.gvStorage.player.speed > 0 && !Main.gvStorage.player.isColliding) {  //when player is moving and isn't colliding
             if (cameraSpeed > 0) {
-            	Vector3 directionToCenter = Main.gvStorage.centerPos.copy();
+            	Vector3 directionToCenter = Main.gvStorage.centerPos.copy();	//calculate movement direction for camera
                 directionToCenter.subtract(Main.gvStorage.player.pos);
                 directionToCenter.normalize();
                 
-                moveObjects(directionToCenter, cameraSpeed);
+                moveObjects(directionToCenter, cameraSpeed);	//move camera relative to player distance
             }
-        } else if (!isPlayerCentered(centerThreshold) /*&& !Main.gvStorage.player.isColliding*/) {  // Spieler steht, nutze Zentrierschwelle
-            cameraSpeed = calculateCameraSpeed(centerThreshold);  // Nutze Zentrierschwelle
+        } else if (!isPlayerCentered(centerThreshold) /*&& !Main.gvStorage.player.isColliding*/) {  //if player isn't moving
+            cameraSpeed = calculateCameraSpeed(centerThreshold);  //use center Threshold
             if (cameraSpeed > 0) {
-                adjustCameraToCenter();
+                adjustCameraToCenter();		//move camera slowly until player is centered
             }
         }
-//        Logger.logInfo("isColliding: "+Main.gvStorage.player.isColliding);
     }
 	
 	
@@ -55,7 +53,7 @@ public class CameraMovement {
         float distanceFactor = outerBox - innerBox;
 
         if (distanceFactor <= 0) {
-            Logger.logError("Fehlerhafte berechnung: "+ new IllegalAccessException(""));
+            MyConsole.logError("Fehlerhafte berechnung: "+ new IllegalAccessException(""));
         }
 
         float adjustedDistance = Math.max(0, Math.min(distance - threshold, distanceFactor));
@@ -81,12 +79,12 @@ public class CameraMovement {
     }
 
 	private static void adjustCameraToCenter() {
-        // Bewege die Kamera Richtung Zentrum des Spielers
+        // moves camera to player
         Vector3 directionToCenter = Main.gvStorage.centerPos.copy();
         directionToCenter.subtract(Main.gvStorage.player.pos);
         directionToCenter.normalize();
         
-        moveObjects(directionToCenter, Main.gvStorage.player.maxSpeed / 5);  // Kamera bewegt sich langsamer
+        moveObjects(directionToCenter, Main.gvStorage.player.maxSpeed / 3);  // move camera slowly to center player
     }
 	
 }

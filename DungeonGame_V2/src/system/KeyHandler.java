@@ -3,6 +3,7 @@ package system;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import items.ItemManager;
 import main.Main;
 
 public class KeyHandler implements KeyListener{
@@ -34,9 +35,12 @@ public class KeyHandler implements KeyListener{
 		
 		if(e.getKeyCode() == KeyEvent.VK_F1) {
 			Main.gvStorage.debug = !Main.gvStorage.debug;
-			Logger.logInfo("debug change: "+ Main.gvStorage.debug);
+			MyConsole.logInfo("debug change: "+ Main.gvStorage.debug);
 		}
 		
+		if(e.getKeyCode() == KeyEvent.VK_F2) {
+			Main.gvStorage.itemManager.generateXPOrb(Main.gvStorage.player.pos.vecX+150, Main.gvStorage.player.pos.vecY, 10);
+		}
 	}
 
 	@Override
@@ -56,6 +60,8 @@ public class KeyHandler implements KeyListener{
 		if(e.getKeyChar() == 'w' || e.getKeyChar() == 'W') {
 			Main.gvStorage.moveUp = false;
 		}
+		
+		
 		
 	}
 

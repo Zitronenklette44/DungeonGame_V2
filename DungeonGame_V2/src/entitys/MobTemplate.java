@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import fundamentals.SimpleObject;
-import system.Logger;
+import system.MyConsole;
 import system.Vector3;
 
 public class MobTemplate extends SimpleObject{
@@ -36,7 +36,7 @@ public class MobTemplate extends SimpleObject{
 	
 	@Override
 	public void onCollision(SimpleObject ob) {
-		if(hasCollision) {
+		if(hasCollision && ob.hasCollision) {
 			pos.add(movement.getReverse());
 			speed = 0;
 			movement = Vector3.zeroVec();

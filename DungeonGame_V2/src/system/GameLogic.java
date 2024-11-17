@@ -37,18 +37,18 @@ public class GameLogic {
 
 		//		Logger.logInfo("L: "+moveLeft+" R: "+ moveRight+" U: "+ moveUp+" D: "+moveDown);
 		
+		//while at least one is pressed
 		if (moveLeft || moveRight || moveUp || moveDown) {
-			if(lastPos.equals(Main.gvStorage.player.pos)) {
-				Main.gvStorage.player.isColliding = true;
+			if(lastPos.equals(Main.gvStorage.player.pos)) {	//when position is equal to saved position
+				Main.gvStorage.player.isColliding = true;	//set collision true
 			}else {
-				Main.gvStorage.player.isColliding = false;
+				Main.gvStorage.player.isColliding = false;	//set collision false
 			}
 		}else {
-			Main.gvStorage.player.isColliding = false;
+			Main.gvStorage.player.isColliding = false;	//set collision false
 		}
 		
-		lastPos = Main.gvStorage.player.pos.copy();
-		Logger.logInfo("colliding: "+ Main.gvStorage.player.isColliding);
+		lastPos = Main.gvStorage.player.pos.copy();	//save current position
 		
 		//while at least one is pressed
 		if (moveLeft || moveRight || moveUp || moveDown) {
@@ -99,7 +99,7 @@ public class GameLogic {
 				if (Main.gvStorage.player.movement.vecX > -Main.gvStorage.player.maxSpeed) {	//when movement is bigger then the negative maxSpeed
 					Main.gvStorage.player.movement.add(Vector3.leftVec());		//increase movement vector by negative one
 					if (XCounter >= 3) {		//if counter reaches 3
-						Logger.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecX);
+						MyConsole.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecX);
 						Main.gvStorage.player.movement.vecX = 0;	//reset movement do to error
 						XCounter = 0;	//reset counter
 					}
@@ -116,7 +116,7 @@ public class GameLogic {
 				if (Main.gvStorage.player.movement.vecX < Main.gvStorage.player.maxSpeed) {		//when movement is smaller then max speed
 					Main.gvStorage.player.movement.add(Vector3.rightVec());		//increase motion vector by one
 					if (XCounter >= 3) {	//if counter reaches 3
-						Logger.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecX);	
+						MyConsole.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecX);	
 						Main.gvStorage.player.movement.vecX = 0;	//reset movement do to error
 						XCounter = 0;	//reset counter
 					}
@@ -140,7 +140,7 @@ public class GameLogic {
 					Main.gvStorage.player.movement.add(Vector3.upVec());	//increase movement by negative one
 					//					Logger.logInfo("addUp: "+ Main.gvStorage.player.movement.vecY);
 					if (YCounter >= 3) {	//if counter reaches 3
-						Logger.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecY);
+						MyConsole.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecY);
 						Main.gvStorage.player.movement.vecY = 0;	//reset movement
 						YCounter = 0;	//reset counter
 					}
@@ -156,7 +156,7 @@ public class GameLogic {
 				if (Main.gvStorage.player.movement.vecY < Main.gvStorage.player.maxSpeed) {		//when movement smaller then max speed
 					Main.gvStorage.player.movement.add(Vector3.downVec());		//increase movement by one
 					if (YCounter >= 3) {	//when counter reaches 3
-						Logger.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecY);
+						MyConsole.logInfo("force Reset Speed: Player stuck on value " + Main.gvStorage.player.movement.vecY);
 						Main.gvStorage.player.movement.vecY = 0;	//reset movement
 						YCounter = 0;		//reset counter
 					}
@@ -180,12 +180,12 @@ public class GameLogic {
 		}
 	}
 
-	private boolean outOfBounds() {
-		Vector3 pos = Main.gvStorage.player.pos.copy();
-		Vector3 movement = Main.gvStorage.player.movement.copy();
-		pos.add(movement);
+	private boolean outOfBounds() {		//checks if player would move out of Bounds
+		Vector3 pos = Main.gvStorage.player.pos.copy();		//copy current position
+		Vector3 movement = Main.gvStorage.player.movement.copy();	//copy current movement
+		pos.add(movement);	//add movement to position
 		if (pos.getVecX() < 0 || pos.getVecX() + Main.gvStorage.player.size.width > Screen.size.width - 15 || pos.getVecY() < 0
-				|| pos.getVecY() + Main.gvStorage.player.size.height > Screen.size.height - 40) {
+				|| pos.getVecY() + Main.gvStorage.player.size.height > Screen.size.height - 40) {	//if out of Bound from Frame
 			return true;
 		}
 		return false;
@@ -198,7 +198,6 @@ public class GameLogic {
 
 		boolean collisionY = obj1.pos.getVecY() + obj1.size.height > obj2.pos.getVecY() &&
                 obj1.pos.getVecY() < obj2.pos.getVecY() + obj2.size.height;	//overlapping on y-axis
-		
 		
 		if (collisionX && collisionY) {
 	        obj1.onCollision(obj2);
@@ -233,13 +232,14 @@ public class GameLogic {
 	    Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getCurrentObjects().iterator();
 	    while (iterator.hasNext()) {	//for all current Elements
 	        SimpleObject ob = iterator.next();
-
-	        Iterator<SimpleObject> iteratorInner = Main.gvStorage.screenController.getCurrentObjects().iterator();
-	        while (iteratorInner.hasNext()) {	//for all current Elements
-	            SimpleObject obInner = iteratorInner.next();	
-	            if (ob != obInner) {	//stop self collision
-	                checkCollision(ob, obInner);	//check collision
-	            }
+	        if(ob.hasCollision) {
+	        	Iterator<SimpleObject> iteratorInner = Main.gvStorage.screenController.getCurrentObjects().iterator();
+	        	while (iteratorInner.hasNext()) {	//for all current Elements
+	        		SimpleObject obInner = iteratorInner.next();	
+	            	if (ob != obInner) {	//stop self collision
+	                	checkCollision(ob, obInner);	//check collision
+	            	}
+	        	}
 	        }
 	    }
 	}

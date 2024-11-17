@@ -2,6 +2,7 @@ package main;
 
 import rendering.Screen;
 import system.GVStorage;
+import system.interfaces.InterfaceLogic;
 
 public class Main {
 	public static GVStorage gvStorage;
@@ -10,6 +11,9 @@ public class Main {
 		
 		Screen.erstellen();
 		gvStorage = new GVStorage();
+		InterfaceLogic.init();
 		gvStorage.createObjects();
+		
+		
 	}
 }

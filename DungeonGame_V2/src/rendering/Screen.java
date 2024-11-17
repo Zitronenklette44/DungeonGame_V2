@@ -81,7 +81,7 @@ public class Screen extends JFrame {
 		contentPane.setLayout(null);
 
 		CurrentSzene currentSzene = new CurrentSzene(size);
-		currentSzene.setBackground(Color.BLACK);
+		currentSzene.setBackground(Color.green);
 		currentSzene.setFocusable(false);
 		currentSzene.setFocusTraversalKeysEnabled(false);
 		currentSzene.setBounds(10, 10, 105, 60);

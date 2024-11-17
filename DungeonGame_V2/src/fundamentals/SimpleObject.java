@@ -5,13 +5,18 @@ import java.awt.Graphics2D;
 
 import system.Vector3;
 import system.interfaces.Collidable;
+import system.interfaces.EmitsLight;
 
-public class SimpleObject implements Collidable{
+public class SimpleObject implements Collidable, EmitsLight{
 	
 	public Dimension size;
 	public Vector3 pos;
 	public boolean isColliding = false;
 	public boolean hasCollision = true;
+//	public boolean isInLight = false;
+	public boolean isEmitting  = false;
+	public int lightRange = 0;
+	public int burnTime = -1;
 	
 	
 	
@@ -29,5 +34,11 @@ public class SimpleObject implements Collidable{
 	public void stopCollision(SimpleObject ob) {}
 
 	@Override
-	public void startCollision(SimpleObject ob) {};
+	public void startCollision(SimpleObject ob) {}
+
+	@Override
+	public void emitLight() {}
+
+	@Override
+	public void burnsOut() {};
 }

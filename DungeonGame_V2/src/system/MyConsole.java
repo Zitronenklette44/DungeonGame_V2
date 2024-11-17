@@ -1,7 +1,7 @@
 package system;
 import java.text.SimpleDateFormat;
 
-public class Logger {
+public class MyConsole {
 
 	public static final String ansicht_reset = "\u001B[0m";
 	public static final String black = "\u001B[30m";
@@ -54,7 +54,7 @@ public class Logger {
 	}
 
 	public static void logSeperation() {
-		Logger.logInfo("---------------------------------------------------------");
+		MyConsole.logInfo("---------------------------------------------------------");
 	}
 	
 	public static <T> void logArray(T[] array) {
