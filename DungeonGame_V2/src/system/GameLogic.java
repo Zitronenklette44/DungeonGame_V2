@@ -1,6 +1,7 @@
 package system;
 
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
 
 import fundamentals.CameraMovement;
 import fundamentals.SimpleObject;
@@ -176,7 +177,7 @@ public class GameLogic {
 		Main.gvStorage.player.movement.scale(Main.gvStorage.player.speed);		//scale vector by the current speed
 		if (!outOfBounds()) {	//if player movement isn't out of Bounds
 			Main.gvStorage.player.pos.add(Main.gvStorage.player.movement);	//update player position with player movement
-			// moveObjects();
+			Main.gvStorage.player.relativePosition.add(Main.gvStorage.player.movement);
 		}
 	}
 
@@ -199,31 +200,14 @@ public class GameLogic {
 		boolean collisionY = obj1.pos.getVecY() + obj1.size.height > obj2.pos.getVecY() &&
                 obj1.pos.getVecY() < obj2.pos.getVecY() + obj2.size.height;	//overlapping on y-axis
 		
-		if (collisionX && collisionY) {
+		boolean collisionZ = obj1.pos.getVecZ() == obj2.pos.getVecZ();	//overlapping on y-axis
+		
+		if (collisionX && collisionY && collisionZ) {
 	        obj1.onCollision(obj2);
 	        obj2.onCollision(obj1);
 	        
 	        return true;
 	    }
-		
-		/*if (collisionX && collisionY) {
-	        if (!obj1.isColliding && !obj2.isColliding) {
-	            //start collision
-	        	obj1.startCollision(obj2);
-	        	obj2.startCollision(obj1);
-	        	obj1.isColliding = true;  //save collision start
-	            obj2.isColliding = true;
-	            return true;
-	        }
-	    } else {
-	        if (obj1.isColliding || obj2.isColliding) {
-	            //end collision
-	        	obj1.stopCollision(obj2);
-	        	obj2.stopCollision(obj1);
-	            obj1.isColliding = false; 	//save collision stop
-	            obj2.isColliding = false;
-	        }
-	    }*/
 		// no collision
 		return false;
 	}

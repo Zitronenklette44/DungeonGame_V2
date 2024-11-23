@@ -13,7 +13,7 @@ public class XPOrb extends ItemTemplate{
 	public XPOrb(float posX, float posY, int value) {
 		super(posX, posY);
 		this.value = value;
-	}
+	}	
 	
 	@Override
 	public void collect() {
@@ -28,5 +28,11 @@ public class XPOrb extends ItemTemplate{
 		g.setColor(Color.black);
 		g.drawOval((int)pos.getVecX(), (int)pos.getVecY(), size.width, size.height);
 		
+	}
+	
+	@Override
+	public void setDefaultValues() {
+		value = 20;
+		super.setDefaultValues();
 	}
 }

@@ -2,8 +2,6 @@ package entitys;
 
 import java.awt.Dimension;
 
-import entitys.mobs.ColorSwitcher;
-import entitys.mobs.TestObject;
 import main.Main;
 
 public class CreateMob {

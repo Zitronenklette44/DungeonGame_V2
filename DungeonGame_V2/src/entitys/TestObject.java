@@ -1,10 +1,9 @@
-package entitys.mobs;
+package entitys;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-import entitys.MobTemplate;
 import main.Main;
 
 public class TestObject extends MobTemplate{

@@ -46,7 +46,10 @@ public class CurrentSzene extends JLabel{
 		Main.gvStorage.screenController.drawObjects(g);
 		
 		//UI drawing
-			drawXPBar(g);
+		drawXPBar(g);
+		
+		//drawing lvlSwitch
+		drawLvlSwitch(g);
 		
 
 		//debug Camera 
@@ -55,6 +58,20 @@ public class CurrentSzene extends JLabel{
 		}
 	}
 	
+	int currentSize = 0;
+	private void drawLvlSwitch(Graphics2D g) {
+		if(Main.gvStorage.startLvlSwitch && currentSize< Screen.size.width + 400) {
+			currentSize += currentSize/10 * 1 + 1;
+		}else if(currentSize >= Screen.size.width + 400 && Main.gvStorage.startLvlSwitch){
+			Main.gvStorage.switchLvl(Main.gvStorage.switchToLvl);
+			Main.gvStorage.startLvlSwitch = false;
+		}else if(currentSize > 0) {
+			currentSize-= currentSize/10 * 1 + 1;
+		}
+		g.setColor(Color.black);
+		g.fillOval((int)Main.gvStorage.centerPos.getVecX() - currentSize/2, (int)Main.gvStorage.centerPos.getVecY() - currentSize/2, currentSize, currentSize);
+	}
+
 	private void drawDebugScreen(Graphics2D g) {
 		g.setColor(Color.white);
 		g.drawOval(Screen.size.width/2 - Main.gvStorage.innerCameraBox/2, Screen.size.height/2-Main.gvStorage.innerCameraBox/2, Main.gvStorage.innerCameraBox, Main.gvStorage.innerCameraBox);
@@ -68,8 +85,9 @@ public class CurrentSzene extends JLabel{
 		g.drawString("nextLvlXP: " + Main.gvStorage.player.nextLvlThreashold, Screen.size.width/100 * 2, Screen.size.height/100 * 10);
 		g.drawString("currentLvl: " + Main.gvStorage.player.currentLvl, Screen.size.width/100 * 2, Screen.size.height/100 * 12);
 		g.drawString(" ", Screen.size.width/100 * 2, Screen.size.height/100 * 14);
-		g.drawString("PlayerPos: " + Math.round(Main.gvStorage.player.pos.getVecX()) + " | " + Math.round(Main.gvStorage.player.pos.getVecY()), Screen.size.width/100 * 2, Screen.size.height/100 * 16);
-		
+		g.drawString("PlayerScreenPos: " + Math.round(Main.gvStorage.player.pos.getVecX()) + " | " + Math.round(Main.gvStorage.player.pos.getVecY()), Screen.size.width/100 * 2, Screen.size.height/100 * 16);
+		g.drawString("PlayerWorldPos: " + Math.round(Main.gvStorage.player.relativePosition.getVecX()) + " | " + Math.round(Main.gvStorage.player.relativePosition.getVecY()), Screen.size.width/100 * 2, Screen.size.height/100 * 18);
+		g.drawString("CameraWorldPos: " + Math.round(Main.gvStorage.cameraPos.getVecX()) + " | " + Math.round(Main.gvStorage.cameraPos.getVecY()), Screen.size.width/100 * 2, Screen.size.height/100 * 20);
 	}
 
 	int currentProgress = 0;  

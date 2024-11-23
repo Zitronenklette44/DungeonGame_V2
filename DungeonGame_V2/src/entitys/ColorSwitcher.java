@@ -1,9 +1,8 @@
-package entitys.mobs;
+package entitys;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
-import entitys.MobTemplate;
 import fundamentals.SimpleObject;
 import system.MyConsole;
 

@@ -7,8 +7,9 @@ import java.awt.Graphics2D;
 import fundamentals.SimpleObject;
 import system.MyConsole;
 import system.Vector3;
+import system.interfaces.Damageable;
 
-public class MobTemplate extends SimpleObject{
+public class MobTemplate extends SimpleObject implements Damageable{
 
 	public int HP;
 	public int maxHP;
@@ -32,7 +33,11 @@ public class MobTemplate extends SimpleObject{
 	public MobTemplate(int Width, int Height, float posX, float posY, int maxHP, Color color,float maxSpeed, float accelerationRate) {
 		this(new Dimension(Width, Height), posX, posY, maxHP, color, maxSpeed, accelerationRate);
 	}
-		
+	
+	@Override
+	public MobTemplate clone() {
+		return (MobTemplate) super.clone();
+	}
 	
 	@Override
 	public void onCollision(SimpleObject ob) {
@@ -48,5 +53,11 @@ public class MobTemplate extends SimpleObject{
 		g.setColor(color);
 		g.fillRect((int)pos.getVecX(), (int)pos.getVecY(), size.width, size.height);
 	}
+
+	@Override
+	public void takeDamage(int damage) {}
+
+	@Override
+	public void onDestruction() {}
 	
 }

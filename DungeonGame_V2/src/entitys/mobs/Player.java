@@ -16,7 +16,7 @@ public class Player extends MobTemplate{
 	public int nextLvlThreashold = 100;
 
 	public Player() {
-		super(50, 50, 500, 500, 50, Color.gray, 5, 0.2F);
+		super(50, 50, 0, 0, 50, Color.gray, 5, 0.2F);
 		isEmitting = true;
 		lightRange = 300;
 	}

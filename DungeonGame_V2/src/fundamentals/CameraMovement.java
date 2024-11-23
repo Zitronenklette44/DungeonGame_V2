@@ -69,6 +69,7 @@ public class CameraMovement {
 	        SimpleObject ob = iterator.next();
 	        ob.pos.add(direction);  //move objects to center
 	    }
+	    Main.gvStorage.cameraPos.subtract(direction);
 	}
 	
 	

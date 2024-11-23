@@ -16,13 +16,18 @@ public class ItemTemplate extends SimpleObject implements Collectable{
 		super(new Dimension(25, 25), posX, posY);
 		hasCollision = false;
 	}
+	
+	@Override
+	public ItemTemplate clone() {
+		return (ItemTemplate) super.clone();
+	}
 
 	@Override
 	public void collect() {
 		MyConsole.logInfo("collecting");
 		remove();
 	}
-
+	
 	@Override
 	public void remove() {
 		Main.gvStorage.itemManager.removeFloorItem(this);
@@ -44,6 +49,5 @@ public class ItemTemplate extends SimpleObject implements Collectable{
 	public void merge(ItemTemplate item) {
 		count += item.count;
 	}
-	
 	
 }

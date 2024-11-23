@@ -22,6 +22,7 @@ public class Screen extends JFrame {
 	public static Point pos;
 	public static Dimension size;
 	private static Screen frame;
+	public static CommandOverlay commandOverlay;
 
 	public static void erstellen() {
 		EventQueue.invokeLater(new Runnable() {
@@ -31,7 +32,7 @@ public class Screen extends JFrame {
 				pos = new Point(0, 0);
 				GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 				size = new Dimension(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
-				Main.gvStorage.updateScreenDetails();
+				Main.gvStorage.updateScreenDetails(true);
 				
 				try { // creating frame
 					frame = new Screen();
@@ -58,6 +59,10 @@ public class Screen extends JFrame {
 		if(frame != null)
 			frame.repaint();
 	}
+	
+	public static void showCommandOverlay(boolean value) {
+		commandOverlay.setVisible(value);
+	}
 
 	/**
 	 * Create the frame.
@@ -68,7 +73,7 @@ public class Screen extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				try {
-					Main.gvStorage.updateScreenDetails();
+					Main.gvStorage.updateScreenDetails(true);
 					size = new Dimension(frame.getWidth(), frame.getHeight());
 				} catch (NullPointerException e2) {
 					// TODO: handle exception
@@ -84,9 +89,16 @@ public class Screen extends JFrame {
 		currentSzene.setBackground(Color.green);
 		currentSzene.setFocusable(false);
 		currentSzene.setFocusTraversalKeysEnabled(false);
-		currentSzene.setBounds(10, 10, 105, 60);
 		currentSzene.setVisible(true);
 		currentSzene.setBounds(0, 0, size.width, size.height);
+		
+		commandOverlay = new CommandOverlay();
+		commandOverlay.setFocusable(false);
+		commandOverlay.setFocusTraversalKeysEnabled(false);
+		commandOverlay.setBounds(0, 0, size.width, size.height);
+		commandOverlay.setVisible(false);
+		
+		contentPane.add(commandOverlay);
 		contentPane.add(currentSzene);
 
 		setContentPane(contentPane);

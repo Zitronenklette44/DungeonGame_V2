@@ -1,5 +1,7 @@
 package main;
 
+import commandLine.CommandInterpretor;
+import dungeon.DungeonManager;
 import rendering.Screen;
 import system.GVStorage;
 import system.interfaces.InterfaceLogic;
@@ -13,7 +15,9 @@ public class Main {
 		gvStorage = new GVStorage();
 		InterfaceLogic.init();
 		gvStorage.createObjects();
-		
+		CommandInterpretor.initCommands();
+		DungeonManager.init();
+		gvStorage.initLvls();
 		
 	}
 }
