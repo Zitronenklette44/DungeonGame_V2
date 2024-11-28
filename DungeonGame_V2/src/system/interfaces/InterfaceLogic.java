@@ -6,7 +6,6 @@ import java.util.Iterator;
 import entitys.MobTemplate;
 import fundamentals.SimpleObject;
 import main.Main;
-import system.Vector3;
 
 public class InterfaceLogic {
 

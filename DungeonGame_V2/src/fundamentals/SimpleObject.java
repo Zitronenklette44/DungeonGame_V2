@@ -58,7 +58,7 @@ public class SimpleObject implements Collidable, EmitsLight, Cloneable{
 	
 	public void setDefaultValues() {
 		pos = worldToScreen(this.relativePosition, Main.gvStorage.cameraPos);
-		MyConsole.logInfo(pos.toString());
+//		MyConsole.logInfo(pos.toString());
 	}
 
 	protected Vector3 worldToScreen(Vector3 worldPos, Vector3 cameraPos) {

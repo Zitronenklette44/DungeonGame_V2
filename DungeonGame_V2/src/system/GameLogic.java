@@ -1,8 +1,6 @@
 package system;
 
 import java.util.Iterator;
-import java.util.zip.ZipEntry;
-
 import fundamentals.CameraMovement;
 import fundamentals.SimpleObject;
 import main.Main;
@@ -194,23 +192,31 @@ public class GameLogic {
 
 	public boolean checkCollision(SimpleObject obj1, SimpleObject obj2) {
 
-		boolean collisionX = obj1.pos.getVecX() + obj1.size.width > obj2.pos.getVecX() &&
-                obj1.pos.getVecX() < obj2.pos.getVecX() + obj2.size.width;	//overlapping on x-axis
+	    //calculate edges with the position
+	    float obj1Left = obj1.pos.getVecX() - obj1.size.width / 2;
+	    float obj1Right = obj1.pos.getVecX() + obj1.size.width / 2;
+	    float obj1Top = obj1.pos.getVecY() - obj1.size.height / 2;
+	    float obj1Bottom = obj1.pos.getVecY() + obj1.size.height / 2;
 
-		boolean collisionY = obj1.pos.getVecY() + obj1.size.height > obj2.pos.getVecY() &&
-                obj1.pos.getVecY() < obj2.pos.getVecY() + obj2.size.height;	//overlapping on y-axis
-		
-		boolean collisionZ = obj1.pos.getVecZ() == obj2.pos.getVecZ();	//overlapping on y-axis
-		
-		if (collisionX && collisionY && collisionZ) {
+	    float obj2Left = obj2.pos.getVecX() - obj2.size.width / 2;
+	    float obj2Right = obj2.pos.getVecX() + obj2.size.width / 2;
+	    float obj2Top = obj2.pos.getVecY() - obj2.size.height / 2;
+	    float obj2Bottom = obj2.pos.getVecY() + obj2.size.height / 2;
+
+	    //check collisions
+	    boolean collisionX = obj1Right > obj2Left && obj1Left < obj2Right; //overlapping on x-axis
+	    boolean collisionY = obj1Bottom > obj2Top && obj1Top < obj2Bottom; //overlapping on y-axis
+	    boolean collisionZ = obj1.pos.getVecZ() == obj2.pos.getVecZ(); //overlapping on z-axis
+
+	    if (collisionX && collisionY && collisionZ) {
 	        obj1.onCollision(obj2);
 	        obj2.onCollision(obj1);
-	        
 	        return true;
 	    }
-		// no collision
-		return false;
+	    //no collision
+	    return false;
 	}
+
 
 	private void CollisionObjects() {	//checks collisions for all Elements on Screen with all other Elements on screen
 	    Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getCurrentObjects().iterator();

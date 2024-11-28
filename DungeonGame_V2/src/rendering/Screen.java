@@ -75,6 +75,7 @@ public class Screen extends JFrame {
 				try {
 					Main.gvStorage.updateScreenDetails(true);
 					size = new Dimension(frame.getWidth(), frame.getHeight());
+					commandOverlay.setBounds(0, 0, size.width, size.height);
 				} catch (NullPointerException e2) {
 					// TODO: handle exception
 				}

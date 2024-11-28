@@ -10,7 +10,6 @@ import java.awt.Shape;
 import javax.swing.JLabel;
 
 import main.Main;
-import system.MyConsole;
 
 public class CurrentSzene extends JLabel{
 	private static final long serialVersionUID = 1L;

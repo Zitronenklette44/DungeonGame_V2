@@ -3,7 +3,6 @@ package system;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import items.ItemManager;
 import main.Main;
 import rendering.Screen;
 

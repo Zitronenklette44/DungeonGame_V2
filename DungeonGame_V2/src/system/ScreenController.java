@@ -2,23 +2,16 @@ package system;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.MultipleGradientPaint.CycleMethod;
-import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import entitys.mobs.Player;
+import dungeon.DungeonManager;
 import fundamentals.SimpleObject;
-import items.ItemTemplate;
 import main.Main;
 import rendering.Screen;
 
@@ -71,6 +64,11 @@ public class ScreenController {
 		allObjects.add(newObject);
 		currentObjects.add(newObject);
 	}
+	
+	public void addObject(ArrayList<SimpleObject> newObjects) {
+		allObjects.addAll(newObjects);
+		currentObjects.addAll(newObjects);
+	}
 
 	public void removeObject(SimpleObject object) {
 		for (int i = 0; i < allObjects.size(); i++) {
@@ -96,6 +94,15 @@ public class ScreenController {
 	
 	
 	public void drawObjects(Graphics2D g) {
+		Iterator<DungeonManager> iteratorDungeon = Main.gvStorage.dungeons.iterator();
+		while(iteratorDungeon.hasNext()) {
+			DungeonManager dungeon = iteratorDungeon.next();
+			if(dungeon.pos.getVecZ() == Main.gvStorage.player.pos.getVecZ()) {
+				dungeon.draw(g);
+			}
+//			MyConsole.logInfo("dungeon pos-->"+dungeon.startPos.toString());
+//			MyConsole.logInfo("Nr dungeons-->"+Main.gvStorage.dungeons.size());
+		}
 		ArrayList<SimpleObject> drawLater = new ArrayList<>();
 		try {
 			Iterator<SimpleObject> iterator = currentObjects.iterator();
@@ -110,6 +117,7 @@ public class ScreenController {
 		} catch (ConcurrentModificationException e) {
 			// Handle exception gracefully
 		}
+		
 
 		if (darkness) {
 			// Step 1: Create a BufferedImage for the darkness layer

@@ -2,6 +2,8 @@ package fundamentals;
 
 import java.util.Iterator;
 
+import dungeon.DungeonManager;
+import entitys.mobs.Player;
 import main.Main;
 import system.MyConsole;
 import system.Vector3;
@@ -61,6 +63,7 @@ public class CameraMovement {
     }
 	
 	private static void moveObjects(Vector3 direction, float speed) {
+		direction = new Vector3(direction.getVecX(), direction.getVecY(), 0);	//setting z-axis to zero else player would move between layers destroying rendering of objects
 	    direction.scale(speed);		//adjust direction with speed
 
 	    Iterator<SimpleObject> iterator = Main.gvStorage.screenController.getAllObjects().iterator();
@@ -69,6 +72,13 @@ public class CameraMovement {
 	        SimpleObject ob = iterator.next();
 	        ob.pos.add(direction);  //move objects to center
 	    }
+	    
+	    for(DungeonManager dungeon : Main.gvStorage.dungeons) {
+			if(dungeon.pos.getVecZ() == Main.gvStorage.player.pos.getVecZ()) {
+				dungeon.changePos(direction);
+			}
+		}
+	    
 	    Main.gvStorage.cameraPos.subtract(direction);
 	}
 	

@@ -2,11 +2,7 @@ package entitys.mobs;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Currency;
-
 import entitys.MobTemplate;
-import system.interfaces.Collidable;
-import system.interfaces.EmitsLight;
 import system.interfaces.InterfaceLogic;
 
 public class Player extends MobTemplate{
@@ -24,7 +20,7 @@ public class Player extends MobTemplate{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(color);
-		g.fillRect((int)pos.getVecX(), (int)pos.getVecY(), size.width, size.height);
+		g.fillRect((int)pos.getVecX() - size.width/2, (int)pos.getVecY() - size.height/2, size.width, size.height);
 		
 		
 	}

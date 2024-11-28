@@ -5,27 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import commandLine.CommandInterpretor;
 import dungeon.DungeonManager;
 import dungeon.roomLogic.RoomTemplate;
 import entitys.CreateMob;
 import entitys.mobs.Player;
+import fundamentals.CommandInterpretor;
 import fundamentals.SimpleObject;
 import items.ItemManager;
-import items.ItemTemplate;
 import main.Main;
 import rendering.Screen;
-import system.interfaces.InterfaceLogic;
 import timer.Tick;
 
 public class GVStorage {
 	
-	//random System stuff
+	//System objects
 	public ScreenController screenController;
 	public ItemManager itemManager;
 	public CommandInterpretor commandInterpretor;
 	public Tick tickTimer;
+	public GameLogic gameLogic;
 	public Player player;
+	
+	//some variables
 	public boolean debug = false;
 	public boolean consoleOpen = false;
 	public RoomTemplate lastRoom;
@@ -50,6 +51,7 @@ public class GVStorage {
 	//Listen
 	ArrayList<CopyOnWriteArrayList<SimpleObject>> allLvls = new ArrayList<CopyOnWriteArrayList<SimpleObject>>();
 	ArrayList<Vector3> playerPosLvl = new ArrayList<Vector3>();
+	public ArrayList<DungeonManager> dungeons = new ArrayList<DungeonManager>();
 	
 	public GVStorage() {
 		screenController = new ScreenController();
@@ -57,6 +59,7 @@ public class GVStorage {
 		commandInterpretor = new CommandInterpretor();
 		tickTimer = new Tick();
 		player = new Player();
+		gameLogic = new GameLogic();
 		cameraPos = player.pos;
 		
 		startTimer();
@@ -144,9 +147,17 @@ public class GVStorage {
 		player.relativePosition = playerPosLvl.get(newLevel);
 		cameraPos = playerPosLvl.get(newLevel).copy();
 		player.pos.vecZ = newLevel;
-		player.pos.vecX = centerPos.vecX;
+		player.pos.vecX = centerPos.vecX; 
 		player.pos.vecY = centerPos.vecY;
 		currentLvl = newLevel;
+	}
+
+
+	public void generateNewDungeon(Vector3 startPos, int maxRoomNR, int minRoomNR, boolean isDark) {
+		DungeonManager temp = new DungeonManager(startPos, maxRoomNR, minRoomNR, isDark);
+		temp.generateRooms();
+		screenController.addObject(temp.getAllFeatures());
+		dungeons.add(temp);
 	}
 	
 

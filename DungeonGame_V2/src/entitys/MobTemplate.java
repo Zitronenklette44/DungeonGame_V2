@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import fundamentals.SimpleObject;
-import system.MyConsole;
 import system.Vector3;
 import system.interfaces.Damageable;
 
@@ -51,7 +50,7 @@ public class MobTemplate extends SimpleObject implements Damageable{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(color);
-		g.fillRect((int)pos.getVecX(), (int)pos.getVecY(), size.width, size.height);
+		g.fillRect((int)pos.getVecX()-size.width/2, (int)pos.getVecY()-size.height/2, size.width, size.height);
 	}
 
 	@Override

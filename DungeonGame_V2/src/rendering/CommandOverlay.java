@@ -7,9 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JLabel;
 
-import commandLine.CommandInterpretor;
 import main.Main;
-import system.MyConsole;
 
 public class CommandOverlay extends JLabel{
 	private static final long serialVersionUID = 1L;

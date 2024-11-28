@@ -1,7 +1,7 @@
 package main;
 
-import commandLine.CommandInterpretor;
 import dungeon.DungeonManager;
+import fundamentals.CommandInterpretor;
 import rendering.Screen;
 import system.GVStorage;
 import system.interfaces.InterfaceLogic;

@@ -1,14 +1,15 @@
-package commandLine;
+package fundamentals;
 
 import java.awt.Dimension;
 import java.util.HashMap;
 
+import dungeon.DungeonManager;
 import entitys.MobTemplate;
-import entitys.TestObject;
 import entitys.mobs.TestDummy;
 import items.ItemTemplate;
 import items.itemTypes.XPOrb;
 import main.Main;
+import system.GameLogic;
 import system.MyConsole;
 import system.Vector3;
 
@@ -53,6 +54,20 @@ public class CommandInterpretor {
 		
 		} break;
 		
+		case "dungeon": {
+			if(command[1].equals("generate")) {
+				Vector3 temp = Main.gvStorage.player.relativePosition.copy();
+				temp.add(new Vector3(0, 0, Main.gvStorage.currentLvl));
+				Main.gvStorage.generateNewDungeon(temp, 50, 40, false);
+				MyConsole.logInfo("command sucessful");	
+			}else if(command[1].equals("delete")) {
+				Main.gvStorage.dungeons.remove(Integer.parseInt(command[2])-1);
+				
+				MyConsole.logInfo("command sucessful");
+			}
+			
+		
+		} break;
 		
 		default:
 			MyConsole.logWarning("Invalid Command -->" + input);
